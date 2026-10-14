@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CircuitX - Circuit Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ========== 1. TOP BAR ========== -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">C</span>
+      <h1>CircuitX</h1>
+      <span class="file-name">Half adder (untitled)</span>
+    </div>
+    <nav class="actions">
+      <button>Reset</button>
+      <button>Undo</button>
+      <button>Redo</button>
+      <button>Save</button>
+      <button>Open</button>
+      <button>Examples</button>
+      <button class="login">Login</button>
+    </nav>
+  </header>
+
+  <!-- ========== 2. TOOLBOX (left) ========== -->
+  <aside class="toolbox">
+    <h2>Logic gates</h2>
+    <!-- draggable="true" is plain HTML. Dropping needs JavaScript, so it is for the next stage. -->
+    <div class="item" draggable="true"><b>AND</b><small>1 only if both inputs are 1</small></div>
+    <div class="item" draggable="true"><b>OR</b><small>1 if any input is 1</small></div>
+    <div class="item" draggable="true"><b>NOT</b><small>flips the input</small></div>
+    <div class="item" draggable="true"><b>NAND</b><small>opposite of AND</small></div>
+    <div class="item" draggable="true"><b>NOR</b><small>opposite of OR</small></div>
+    <div class="item" draggable="true"><b>XOR</b><small>1 if inputs are different</small></div>
+
+    <h2>Input and output</h2>
+    <div class="item io" draggable="true"><b>Switch</b><small>gives 0 or 1</small></div>
+    <div class="item io" draggable="true"><b>LED</b><small>glows when 1</small></div>
+  </aside>
+
+  <!-- ========== 3. CANVAS (middle) ========== -->
+  <main class="canvas">
+    <div class="canvas-hint">Drag parts from the toolbox and join them with wires</div>
+
+    <!-- The sample circuit: a half adder with A = 1 and B = 1 -->
+    <div class="circuit">
+
+      <!-- Switches -->
+      <div class="part switch on" style="top:38px; left:0;">A = 1</div>
+      <div class="part switch on" style="top:230px; left:0;">B = 1</div>
+
+      <!-- Wires from the switches (teal = signal 1) -->
+      <div class="wire h on" style="top:56px;  left:84px;  width:176px;"></div>
+      <div class="wire v on" style="top:56px;  left:170px; height:160px;"></div>
+      <div class="wire h on" style="top:216px; left:170px; width:90px;"></div>
+      <div class="wire h on" style="top:248px; left:84px;  width:176px;"></div>
+      <div class="wire v on" style="top:88px;  left:210px; height:160px;"></div>
+      <div class="wire h on" style="top:88px;  left:210px; width:50px;"></div>
+
+      <!-- Junction dots where one wire splits in two -->
+      <span class="dot on" style="top:52px;  left:166px;"></span>
+      <span class="dot on" style="top:244px; left:206px;"></span>
+
+      <!-- Gates -->
+      <div class="part gate" style="top:40px;  left:260px;"><b>XOR</b><small>sum</small></div>
+      <div class="part gate" style="top:200px; left:260px;"><b>AND</b><small>carry</small></div>
+
+      <!-- Wires from the gates to the LEDs (grey = signal 0) -->
+      <div class="wire h"    style="top:72px;  left:358px; width:122px;"></div>
+      <div class="wire h on" style="top:232px; left:358px; width:122px;"></div>
+
+      <!-- LEDs -->
+      <div class="led"        style="top:56px;  left:480px;"></div>
+      <span class="led-label" style="top:62px;  left:524px;">Sum = 0</span>
+      <div class="led lit"    style="top:216px; left:480px;"></div>
+      <span class="led-label" style="top:222px; left:524px;">Carry = 1</span>
+
+    </div>
+  </main>
+
+  <!-- ========== 4. DETAILS PANEL (right) ========== -->
+  <aside class="details">
+    <h2>Details</h2>
+    <p class="note">Selected part</p>
+
+    <label for="name">Name</label>
+    <input id="name" type="text" value="XOR 1">
+
+    <label for="type">Type</label>
+    <select id="type">
+      <option>XOR</option>
+      <option>AND</option>
+      <option>OR</option>
+      <option>NOT</option>
+      <option>NAND</option>
+      <option>NOR</option>
+    </select>
+
+    <label for="inputs">Number of inputs</label>
+    <select id="inputs">
+      <option>2</option>
+      <option>1 (NOT only)</option>
+    </select>
+
+    <label>Current output</label>
+    <div class="output-box">0</div>
+
+    <button class="delete">Delete part</button>
+  </aside>
+
+  <!-- ========== 5. BOTTOM PANEL ========== -->
+  <section class="bottom">
+    <div class="tabs">
+      <span class="tab active">Truth table</span>
+      <span class="tab">Messages</span>
+    </div>
+
+    <div class="bottom-body">
+      <table>
+        <thead>
+          <tr><th>A</th><th>B</th><th>Sum (XOR)</th><th>Carry (AND)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr class="current"><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+        </tbody>
+      </table>
+
+      <div class="message-box">
+        <p class="ok">Circuit is fine. All inputs are connected.</p>
+        <p class="note">The highlighted row is the current switch setting.</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

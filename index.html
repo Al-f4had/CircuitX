@@ -1,64 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CircuitX - Beta</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#101a2b">
+<title>CircuitX — Digital Logic Lab</title><link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="logo">C</span><h1>CircuitX</h1>
-      <span class="file-name">Beta: sequential circuits</span>
-    </div>
-    <nav class="actions">
-      <button id="clockBtn">Auto clock: OFF</button>
-      <button id="resetBtn">Reset</button>
-    </nav>
-  </header>
-
-  <aside class="toolbox">
-    <h2>Logic gates</h2>
-    <div class="item" draggable="true" data-type="AND"><b>AND</b></div>
-    <div class="item" draggable="true" data-type="OR"><b>OR</b></div>
-    <div class="item" draggable="true" data-type="NOT"><b>NOT</b></div>
-    <div class="item" draggable="true" data-type="NAND"><b>NAND</b></div>
-    <div class="item" draggable="true" data-type="NOR"><b>NOR</b></div>
-    <div class="item" draggable="true" data-type="XOR"><b>XOR</b></div>
-    <h2>Input and output</h2>
-    <div class="item io" draggable="true" data-type="SWITCH"><b>Switch</b><small>click to toggle</small></div>
-    <div class="item io" draggable="true" data-type="CLOCK"><b>Clock</b><small>click to toggle</small></div>
-    <div class="item io" draggable="true" data-type="LED"><b>LED</b></div>
-    <h2>Memory</h2>
-    <div class="item" draggable="true" data-type="DFF"><b>D flip-flop</b><small>stores 1 bit</small></div>
-    <div class="item" draggable="true" data-type="REG4"><b>4-bit register</b><small>stores 4 bits</small></div>
-  </aside>
-
-  <main class="canvas" id="canvas">
-    <div class="canvas-hint">Drag parts here. Click an output pin (right), then an input pin (left) to draw a wire.</div>
-    <svg id="wires"></svg>
-  </main>
-
-  <aside class="details">
-    <h2>Details</h2>
-    <p class="note" id="noSel">Click a part to select it</p>
-    <div id="selInfo" hidden>
-      <label>Part</label><div class="output-box" id="selName"></div>
-      <label>Output value</label><div class="output-box" id="selOut"></div>
-      <button class="delete" id="delBtn">Delete part</button>
-    </div>
-  </aside>
-
-  <section class="bottom">
-    <div class="tabs"><span class="tab active">Messages and values</span></div>
-    <div class="bottom-body">
-      <div id="messages" style="min-width:320px"></div>
-      <table class="small-table"><thead><tr><th>Part</th><th>Value</th></tr></thead><tbody id="values"></tbody></table>
-    </div>
-  </section>
-
-  <script src="engine.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+<header class="topbar"><div class="brand"><span class="logo">C</span><div><h1>CircuitX</h1><small>Digital Logic Lab</small></div></div>
+<div class="top-actions"><button id="clockBtn" class="quiet">Auto clock: OFF</button><button id="fitBtn" class="quiet">Fit view</button><button id="resetBtn" class="danger-quiet">Reset</button></div></header>
+<aside class="toolbox panel"><div class="panel-heading"><div><span class="eyebrow">COMPONENT LIBRARY</span><h2>Build a circuit</h2></div></div>
+<section class="tool-group"><h3>Logic gates</h3><div class="tool-grid"><div class="item component-card" draggable="true" data-type="AND"><span class="component-visual gate-visual"><svg viewBox="0 0 88 54" aria-hidden="true"><g> <path d="M13 8 H42 A19 19 0 0 1 42 46 H13 Z"/> </g></svg></span><span class="component-name">AND</span><span class="component-meta">2-input gate</span></div><div class="item component-card" draggable="true" data-type="OR"><span class="component-visual gate-visual"><svg viewBox="0 0 88 54" aria-hidden="true"><g> <path d="M12 8 C25 18 25 36 12 46 C39 46 63 37 77 27 C63 17 39 8 12 8 Z"/> </g></svg></span><span class="component-name">OR</span><span class="component-meta">2-input gate</span></div><div class="item component-card" draggable="true" data-type="NOT"><span class="component-visual gate-visual"><svg viewBox="0 0 88 54" aria-hidden="true"><g> <path d="M15 7 L69 27 L15 47 Z"/> <circle cx="76" cy="27" r="4"/> </g></svg></span><span class="component-name">NOT</span><span class="component-meta">Inverter</span></div><div class="item component-card" draggable="true" data-type="NAND"><span class="component-visual gate-visual"><svg viewBox="0 0 88 54" aria-hidden="true"><g> <path d="M13 8 H42 A19 19 0 0 1 42 46 H13 Z"/> <circle cx="65" cy="27" r="4"/></g></svg></span><span class="component-name">NAND</span><span class="component-meta">2-input gate</span></div><div class="item component-card" draggable="true" data-type="NOR"><span class="component-visual gate-visual"><svg viewBox="0 0 88 54" aria-hidden="true"><g> <path d="M12 8 C25 18 25 36 12 46 C39 46 63 37 77 27 C63 17 39 8 12 8 Z"/> <circle cx="83" cy="27" r="4"/></g></svg></span><span class="component-name">NOR</span><span class="component-meta">2-input gate</span></div><div class="item component-card" draggable="true" data-type="XOR"><span class="component-visual gate-visual"><svg viewBox="0 0 88 54" aria-hidden="true"><g> <path d="M19 8 C32 18 32 36 19 46 C46 46 68 37 82 27 C68 17 46 8 19 8 Z"/> <path d="M9 8 C22 18 22 36 9 46"/> </g></svg></span><span class="component-name">XOR</span><span class="component-meta">2-input gate</span></div></div></section>
+<section class="tool-group"><h3>Inputs & outputs</h3><div class="tool-grid"><div class="item component-card" draggable="true" data-type="SWITCH"><span class="component-visual"><span class="switch-art"><i></i></span></span><span class="component-name">Switch</span><span class="component-meta">Digital input</span></div><div class="item component-card" draggable="true" data-type="CLOCK"><span class="component-visual"><span class="clock-art"><i></i></span></span><span class="component-name">Clock</span><span class="component-meta">Pulse input</span></div><div class="item component-card" draggable="true" data-type="LED"><span class="component-visual"><span class="bulb-art"><i></i></span></span><span class="component-name">LED</span><span class="component-meta">Visual output</span></div></div></section>
+<section class="tool-group"><h3>Memory</h3><div class="tool-grid"><div class="item component-card" draggable="true" data-type="DFF"><span class="component-visual"><span class="memory-art">D</span></span><span class="component-name">D flip-flop</span><span class="component-meta">1-bit storage</span></div><div class="item component-card" draggable="true" data-type="REG4"><span class="component-visual"><span class="memory-art">4</span></span><span class="component-name">4-bit register</span><span class="component-meta">4-bit storage</span></div></div></section>
+<p class="tool-tip">Drag a component onto the workspace. Connect output pins to input pins.</p></aside>
+<main class="workspace-shell"><div class="workspace-toolbar"><div><span class="live-dot"></span><span id="workspaceStatus">Workspace ready</span></div><div class="zoom-controls"><span id="zoomLabel">100%</span><span class="zoom-hint">Pinch to zoom</span></div></div>
+<div class="canvas" id="canvas"><div class="canvas-hint" id="canvasHint">Drag parts here · Drag empty space to pan · Scroll to zoom</div><div class="world" id="world"><svg id="wires"></svg></div></div></main>
+<aside class="details panel"><span class="eyebrow">INSPECTOR</span><h2>Component details</h2><p class="note" id="noSel">Select a component to inspect its inputs and output.</p>
+<div id="selInfo" hidden><div class="selected-title"><span class="selected-icon" id="selIcon">◇</span><div><strong id="selName"></strong><small id="selId"></small></div></div><label>Live output</label><div class="output-box" id="selOut">—</div><div id="selInputs" class="inspector-inputs"></div><button class="delete" id="delBtn">Delete component</button></div>
+<div class="inspector-help"><strong>Quick tip</strong><p>Choose an output pin, then choose an input pin to connect two components. Click a wire to remove it.</p></div></aside>
+<section class="bottom panel"><div class="bottom-header"><div><span class="eyebrow">ANALYSIS</span><h2>Simulation results</h2></div><span id="tableMeta" class="table-meta">No circuit yet</span></div>
+<div class="bottom-body"><div class="messages" id="messages"><p class="empty-state">Add components to begin experimenting.</p></div><div class="truth-wrap"><div class="truth-title"><strong>Truth table</strong><small id="truthHint">Connect switches through logic gates to an output.</small></div><div class="table-scroll"><table class="truth-table" id="truthTable"><tbody><tr><td class="empty-table">Your circuit's truth table will appear here.</td></tr></tbody></table></div></div></div></section>
+<script src="engine.js"></script><script src="app.js"></script>
+</body></html>

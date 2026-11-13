@@ -18,7 +18,6 @@
     </nav>
   </header>
 
-  <!-- Toolbox: drag an item onto the canvas. data-type tells the code which part it is -->
   <aside class="toolbox">
     <h2>Logic gates</h2>
     <div class="item" draggable="true" data-type="AND"><b>AND</b></div>
@@ -36,7 +35,6 @@
     <div class="item" draggable="true" data-type="REG4"><b>4-bit register</b><small>stores 4 bits</small></div>
   </aside>
 
-  <!-- Canvas: the SVG draws wires, the code adds the parts here -->
   <main class="canvas" id="canvas">
     <div class="canvas-hint">Drag parts here. Click an output pin (right), then an input pin (left) to draw a wire.</div>
     <svg id="wires"></svg>
@@ -60,7 +58,6 @@
     </div>
   </section>
 
-  <!-- engine.js must load first because app.js uses it -->
   <script src="engine.js"></script>
   <script src="app.js"></script>
 </body>

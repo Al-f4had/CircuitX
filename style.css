@@ -251,3 +251,48 @@
   .toolbox{padding-left:10px;padding-right:10px}
   .details{padding-left:11px;padding-right:11px}
 }
+
+
+/* Desktop rail: library first, its usage tip, then inspector directly beneath */
+@media (min-width:761px){
+  body{
+    grid-template-columns:260px minmax(0,1fr);
+    grid-template-rows:60px auto minmax(0,1fr) 245px;
+    grid-template-areas:
+      "top top"
+      "tools work"
+      "details work"
+      "details bottom";
+  }
+  .toolbox{
+    grid-area:tools;
+    align-self:start;
+    max-height:none;
+    overflow:visible;
+    padding:16px 14px 12px;
+    border-bottom:1px solid var(--line);
+  }
+  .tool-group{margin-top:15px}
+  .tool-tip{
+    display:block;
+    margin-top:15px;
+    padding-top:10px;
+  }
+  .details{
+    grid-area:details;
+    min-height:0;
+    max-height:none;
+    overflow-y:auto;
+    padding:14px;
+  }
+  .details>.eyebrow{display:block}
+  .details h2{margin:4px 0 12px}
+  .inspector-help{display:block}
+  .workspace-shell{grid-area:work;min-height:0}
+  .bottom{grid-area:bottom;min-height:0}
+}
+@media (min-width:761px) and (max-width:1050px){
+  body{grid-template-columns:235px minmax(0,1fr)}
+  .toolbox{padding-left:10px;padding-right:10px}
+  .details{padding-left:11px;padding-right:11px}
+}

@@ -279,3 +279,25 @@ tr.current td { background: #fdf0c8; font-weight: 700; }   /* highlighted row */
 .message-box p { margin-bottom: 8px; font-size: 14px; }
 .ok { color: var(--ok); font-weight: 600; }
 .ok::before { content: "\2713  "; }      /* tick mark */
+
+/* ===== Milestone 3 additions ===== */
+#wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#wires line { stroke: var(--wire-off); stroke-width: 3; pointer-events: stroke; cursor: pointer; }
+#wires line.on { stroke: var(--teal); }
+#wires line:hover { stroke: #b03a2e; }          /* click a wire to delete it */
+.box { position: absolute; width: 90px; background: #eaf2fb; border: 2px solid var(--navy);
+       border-radius: 10px; display: grid; place-items: center; font-weight: 600; font-size: 13px;
+       cursor: move; user-select: none; z-index: 2; }
+.box.selected { outline: 3px solid var(--amber); }
+.box.SWITCH, .box.CLOCK { background: #fff; }
+.box.on { background: var(--teal); color: #fff; }
+.box.LED { background: #e9edf1; }
+.box.LED.on { background: var(--amber); color: var(--navy); box-shadow: 0 0 16px 5px rgba(245,184,46,.6); }
+.box.DFF, .box.REG4 { background: #f4ecf7; }
+.pin { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--white);
+       border: 2px solid var(--navy); cursor: crosshair; }
+.pin.in { left: -8px; }  .pin.out { right: -8px; }
+.pin:hover, .pin.pending { background: var(--amber); }
+.msg-warn { color: #b9770e; font-size: 14px; margin-bottom: 6px; }
+.msg-err  { color: #b03a2e; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+.small-table td, .small-table th { padding: 3px 12px; font-size: 13px; }

@@ -1,64 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CircuitX - Beta</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#101a2b">
+<title>CircuitX — Digital Logic Lab</title><link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="logo">C</span><h1>CircuitX</h1>
-      <span class="file-name">Beta: sequential circuits</span>
-    </div>
-    <nav class="actions">
-      <button id="clockBtn">Auto clock: OFF</button>
-      <button id="resetBtn">Reset</button>
-    </nav>
-  </header>
-
-  <aside class="toolbox">
-    <h2>Logic gates</h2>
-    <div class="item" draggable="true" data-type="AND"><b>AND</b></div>
-    <div class="item" draggable="true" data-type="OR"><b>OR</b></div>
-    <div class="item" draggable="true" data-type="NOT"><b>NOT</b></div>
-    <div class="item" draggable="true" data-type="NAND"><b>NAND</b></div>
-    <div class="item" draggable="true" data-type="NOR"><b>NOR</b></div>
-    <div class="item" draggable="true" data-type="XOR"><b>XOR</b></div>
-    <h2>Input and output</h2>
-    <div class="item io" draggable="true" data-type="SWITCH"><b>Switch</b><small>click to toggle</small></div>
-    <div class="item io" draggable="true" data-type="CLOCK"><b>Clock</b><small>click to toggle</small></div>
-    <div class="item io" draggable="true" data-type="LED"><b>LED</b></div>
-    <h2>Memory</h2>
-    <div class="item" draggable="true" data-type="DFF"><b>D flip-flop</b><small>stores 1 bit</small></div>
-    <div class="item" draggable="true" data-type="REG4"><b>4-bit register</b><small>stores 4 bits</small></div>
-  </aside>
-
-  <main class="canvas" id="canvas">
-    <div class="canvas-hint">Drag parts here. Click an output pin (right), then an input pin (left) to draw a wire.</div>
-    <svg id="wires"></svg>
-  </main>
-
-  <aside class="details">
-    <h2>Details</h2>
-    <p class="note" id="noSel">Click a part to select it</p>
-    <div id="selInfo" hidden>
-      <label>Part</label><div class="output-box" id="selName"></div>
-      <label>Output value</label><div class="output-box" id="selOut"></div>
-      <button class="delete" id="delBtn">Delete part</button>
-    </div>
-  </aside>
-
-  <section class="bottom">
-    <div class="tabs"><span class="tab active">Messages and values</span></div>
-    <div class="bottom-body">
-      <div id="messages" style="min-width:320px"></div>
-      <table class="small-table"><thead><tr><th>Part</th><th>Value</th></tr></thead><tbody id="values"></tbody></table>
-    </div>
-  </section>
-
-  <script src="engine.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
+<header class="topbar"><div class="brand"><span class="logo">C</span><div><h1>CircuitX</h1><small>Digital Logic Lab</small></div></div>
+<div class="top-actions"><button id="clockBtn" class="quiet">Auto clock: OFF</button><button id="fitBtn" class="quiet">Fit view</button><button id="resetBtn" class="danger-quiet">Reset</button></div></header>
+<aside class="toolbox panel"><div class="panel-heading"><div><span class="eyebrow">COMPONENT LIBRARY</span><h2>Build a circuit</h2></div></div>
+<section class="tool-group"><h3>Logic gates</h3><div class="tool-grid">
+<div class="item" draggable="true" data-type="AND"><span class="mini-gate and">AND</span><b>AND</b></div><div class="item" draggable="true" data-type="OR"><span class="mini-gate or">OR</span><b>OR</b></div><div class="item" draggable="true" data-type="NOT"><span class="mini-gate not">NOT</span><b>NOT</b></div><div class="item" draggable="true" data-type="NAND"><span class="mini-gate nand">NAND</span><b>NAND</b></div><div class="item" draggable="true" data-type="NOR"><span class="mini-gate nor">NOR</span><b>NOR</b></div><div class="item" draggable="true" data-type="XOR"><span class="mini-gate xor">XOR</span><b>XOR</b></div>
+</div></section>
+<section class="tool-group"><h3>Inputs & outputs</h3><div class="tool-grid"><div class="item" draggable="true" data-type="SWITCH"><span class="tool-symbol switch-symbol">◉</span><b>Switch</b></div><div class="item" draggable="true" data-type="CLOCK"><span class="tool-symbol clock-symbol">◷</span><b>Clock</b></div><div class="item" draggable="true" data-type="LED"><span class="tool-symbol led-symbol">●</span><b>LED bulb</b></div></div></section>
+<section class="tool-group"><h3>Memory</h3><div class="tool-grid"><div class="item memory-item" draggable="true" data-type="DFF"><span class="memory-symbol">D</span><b>D flip-flop</b></div><div class="item memory-item" draggable="true" data-type="REG4"><span class="memory-symbol">4</span><b>4-bit register</b></div></div></section>
+<p class="tool-tip">Drag a component onto the workspace. Connect output pins to input pins.</p></aside>
+<main class="workspace-shell"><div class="workspace-toolbar"><div><span class="live-dot"></span><span id="workspaceStatus">Workspace ready</span></div><div class="zoom-controls"><button id="zoomOut" aria-label="Zoom out">−</button><span id="zoomLabel">100%</span><button id="zoomIn" aria-label="Zoom in">+</button></div></div>
+<div class="canvas" id="canvas"><div class="canvas-hint" id="canvasHint">Drag parts here · Drag empty space to pan · Scroll to zoom</div><div class="world" id="world"><svg id="wires"></svg></div></div></main>
+<aside class="details panel"><span class="eyebrow">INSPECTOR</span><h2>Component details</h2><p class="note" id="noSel">Select a component to inspect its inputs and output.</p>
+<div id="selInfo" hidden><div class="selected-title"><span class="selected-icon" id="selIcon">◇</span><div><strong id="selName"></strong><small id="selId"></small></div></div><label>Live output</label><div class="output-box" id="selOut">—</div><div id="selInputs" class="inspector-inputs"></div><button class="delete" id="delBtn">Delete component</button></div>
+<div class="inspector-help"><strong>Quick tip</strong><p>Choose an output pin, then choose an input pin to connect two components. Click a wire to remove it.</p></div></aside>
+<section class="bottom panel"><div class="bottom-header"><div><span class="eyebrow">ANALYSIS</span><h2>Simulation results</h2></div><span id="tableMeta" class="table-meta">No circuit yet</span></div>
+<div class="bottom-body"><div class="messages" id="messages"><p class="empty-state">Add components to begin experimenting.</p></div><div class="truth-wrap"><div class="truth-title"><strong>Truth table</strong><small id="truthHint">Connect switches through logic gates to an output.</small></div><div class="table-scroll"><table class="truth-table" id="truthTable"><tbody><tr><td class="empty-table">Your circuit's truth table will appear here.</td></tr></tbody></table></div></div></div></section>
+<script src="engine.js"></script><script src="app.js"></script>
+</body></html>

@@ -8,10 +8,33 @@ canvas.addEventListener('dragover',e=>e.preventDefault());
 canvas.addEventListener('drop',e=>{e.preventDefault();const type=e.dataTransfer.getData('text/plain');if(!SPECS[type])return;const r=canvas.getBoundingClientRect();addPart(type,(e.clientX-r.left-pan.x)/scale-PART_W/2,(e.clientY-r.top-pan.y)/scale-45);});
 function applyView(){world.style.transform='translate('+pan.x+'px,'+pan.y+'px) scale('+scale+')';$('zoomLabel').textContent=Math.round(scale*100)+'%';}
 function zoomAt(next,cx=canvas.clientWidth/2,cy=canvas.clientHeight/2){const r=canvas.getBoundingClientRect(),x=cx-r.left,y=cy-r.top,wx=(x-pan.x)/scale,wy=(y-pan.y)/scale;scale=Math.max(.45,Math.min(2.1,next));pan.x=x-wx*scale;pan.y=y-wy*scale;applyView();}
-$('zoomIn').onclick=()=>zoomAt(scale+.12);$('zoomOut').onclick=()=>zoomAt(scale-.12);
+
 $('fitBtn').onclick=()=>{if(!state.parts.length){scale=1;pan={x:0,y:0};applyView();return;}const minX=Math.min(...state.parts.map(p=>p.x)),minY=Math.min(...state.parts.map(p=>p.y)),maxX=Math.max(...state.parts.map(p=>p.x+PART_W)),maxY=Math.max(...state.parts.map(p=>p.y+90));scale=Math.max(.45,Math.min(1.25,(canvas.clientWidth-100)/(maxX-minX+100),(canvas.clientHeight-100)/(maxY-minY+100)));pan.x=(canvas.clientWidth-(maxX-minX)*scale)/2-minX*scale;pan.y=(canvas.clientHeight-(maxY-minY)*scale)/2-minY*scale;applyView();};
 canvas.addEventListener('wheel',e=>{e.preventDefault();zoomAt(scale+(e.deltaY<0?.08:-.08),e.clientX,e.clientY);},{passive:false});
-canvas.addEventListener('pointerdown',e=>{if(e.target.closest('.box')||e.target.closest('svg path'))return;if(e.button!==0&&e.button!==1)return;const sx=e.clientX,sy=e.clientY,px=pan.x,py=pan.y;canvas.classList.add('panning');canvas.setPointerCapture(e.pointerId);const move=ev=>{pan.x=px+ev.clientX-sx;pan.y=py+ev.clientY-sy;applyView();};const up=()=>{canvas.classList.remove('panning');canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerup',up);};canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',up);});
+const activePointers=new Map();let gesture=null;
+canvas.addEventListener('pointerdown',e=>{
+ if(e.target.closest('.box')||e.target.closest('svg path'))return;
+ if(e.pointerType==='mouse'&&e.button!==0&&e.button!==1)return;
+ activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ try{canvas.setPointerCapture(e.pointerId);}catch(err){}
+ if(activePointers.size===1){gesture={kind:'pan',x:e.clientX,y:e.clientY,panX:pan.x,panY:pan.y};canvas.classList.add('panning');}
+ else if(activePointers.size===2){const pts=[...activePointers.values()],dx=pts[1].x-pts[0].x,dy=pts[1].y-pts[0].y;gesture={kind:'pinch',distance:Math.hypot(dx,dy),scale,midX:(pts[0].x+pts[1].x)/2,midY:(pts[0].y+pts[1].y)/2};}
+});
+canvas.addEventListener('pointermove',e=>{
+ if(!activePointers.has(e.pointerId))return;
+ activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(activePointers.size>=2){const pts=[...activePointers.values()].slice(0,2),dx=pts[1].x-pts[0].x,dy=pts[1].y-pts[0].y,distance=Math.hypot(dx,dy),midX=(pts[0].x+pts[1].x)/2,midY=(pts[0].y+pts[1].y)/2;
+  if(!gesture||gesture.kind!=='pinch')gesture={kind:'pinch',distance,scale,midX,midY};
+  const factor=distance/Math.max(1,gesture.distance),next=gesture.scale*factor,r=canvas.getBoundingClientRect(),x=midX-r.left,y=midY-r.top,worldX=(x-pan.x)/scale,worldY=(y-pan.y)/scale;
+  const previousMidX=gesture.midX-r.left,previousMidY=gesture.midY-r.top;
+  const anchorX=(previousMidX-pan.x)/scale,anchorY=(previousMidY-pan.y)/scale;
+  scale=Math.max(.45,Math.min(2.1,next));pan.x=x-anchorX*scale;pan.y=y-anchorY*scale;applyView();
+  gesture={kind:'pinch',distance,scale,midX,midY};return;
+ }
+ if(gesture&&gesture.kind==='pan'){pan.x=gesture.panX+e.clientX-gesture.x;pan.y=gesture.panY+e.clientY-gesture.y;applyView();}
+});
+function endCanvasPointer(e){activePointers.delete(e.pointerId);if(activePointers.size===1){const p=[...activePointers.values()][0];gesture={kind:'pan',x:p.x,y:p.y,panX:pan.x,panY:pan.y};}else if(activePointers.size===0){gesture=null;canvas.classList.remove('panning');}}
+canvas.addEventListener('pointerup',endCanvasPointer);canvas.addEventListener('pointercancel',endCanvasPointer);
 function update(){const ok=simulate(state);render(ok);try{localStorage.setItem('circuitx',JSON.stringify(state));}catch(e){}}
 function shapeSvg(type){const d={AND:'<path d="M12 10 H49 A27 27 0 0 1 49 64 H12 Z"/>',OR:'<path d="M10 10 Q34 37 10 64 Q51 64 83 37 Q51 10 10 10 Z"/>',NOT:'<path d="M14 10 L78 37 L14 64 Z"/><circle cx="84" cy="37" r="6" class="bubble"/>',NAND:'<path d="M12 10 H49 A27 27 0 0 1 49 64 H12 Z"/><circle cx="83" cy="37" r="6" class="bubble"/>',NOR:'<path d="M10 10 Q34 37 10 64 Q51 64 83 37 Q51 10 10 10 Z"/><circle cx="89" cy="37" r="6" class="bubble"/>',XOR:'<path d="M20 10 Q44 37 20 64 Q61 64 93 37 Q61 10 20 10 Z"/><path d="M10 10 Q34 37 10 64"/>'};return '<svg class="gate-art" viewBox="0 0 104 74" aria-hidden="true"><g>'+d[type]+'</g></svg>';}
 function componentMarkup(p){if(GATES.includes(p.type))return shapeSvg(p.type)+'<span class="part-label">'+p.type+'</span>';if(p.type==='LED')return '<div class="bulb '+(inputValue(state,p,0)?'lit':'')+'"><div class="bulb-glass"></div><div class="bulb-neck"></div><div class="bulb-base"></div></div><span class="part-label">LED</span>';if(p.type==='SWITCH'||p.type==='CLOCK')return '<div class="toggle-track '+(p.out[0]?'active':'')+'"><span></span></div><span class="part-label">'+(p.type==='CLOCK'?'CLOCK':'SWITCH')+'</span><span class="switch-value">'+p.out[0]+'</span>';return '<div class="chip-face"><span>'+(p.type==='DFF'?'D':'4')+'</span><small>'+(p.type==='DFF'?'FLIP-FLOP':'REGISTER')+'</small></div>';}

@@ -299,7 +299,7 @@
 
 
 /* Header brand mark: supplied CircuitX square logo */
-.logo-img{width:42px;height:42px;display:block;flex:0 0 42px;object-fit:contain;border-radius:11px;border:1px solid #28517b;box-shadow:0 3px 15px #087bdb55;background:#071426}
+.logo-img{width:42px;height:42px;display:block;flex:0 0 42px;object-fit:contain;border-radius:0;border:0;box-shadow:none;background:transparent}
 @media(max-width:600px){.logo-img{width:34px;height:34px;flex-basis:34px;border-radius:9px}}
 @media(max-width:420px){.logo-img{width:32px;height:32px;flex-basis:32px}}
 

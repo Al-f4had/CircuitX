@@ -1,4 +1,4 @@
-![CircuitX Logo](assets/IMG-20261117-WA0069.jpg)
+![CircuitX Logo](assets/output-onlinepngtools.png)
 
 # CircuitX - Milestone 3 Beta
 

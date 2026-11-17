@@ -1,5 +1,3 @@
-![CircuitX Logo](assets/IMG_20261117_212149.png)
-
 # CircuitX - Milestone 3 Beta
 
 A digital circuit simulator that runs in the browser. Drag logic gates onto the canvas, connect them with wires, click switches, and watch the outputs change.

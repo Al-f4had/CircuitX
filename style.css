@@ -302,3 +302,26 @@
 .logo-img{width:42px;height:42px;display:block;flex:0 0 42px;object-fit:cover;border-radius:11px;border:1px solid #28517b;box-shadow:0 3px 15px #087bdb55;background:#071426}
 @media(max-width:600px){.logo-img{width:34px;height:34px;flex-basis:34px;border-radius:9px}}
 @media(max-width:420px){.logo-img{width:32px;height:32px;flex-basis:32px}}
+
+/* Truth-table layout: clear metadata alignment and a dedicated scroll viewport. */
+.truth-circuit{display:flex;flex-direction:column;gap:8px;min-width:0;flex:0 0 auto}
+.truth-circuit-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:0;padding:0 2px}
+.truth-circuit-heading strong{font-size:11px;font-weight:750;color:#e8f1fb;letter-spacing:.15px;white-space:nowrap}
+.truth-circuit-heading small{display:block;margin-left:auto;color:#91a5bf;font-size:9px;line-height:1.4;text-align:right;white-space:nowrap}
+.truth-tables{display:flex;flex:1 1 auto;flex-direction:column;gap:14px;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:1px 3px 8px 0}
+.truth-circuit .table-scroll{flex:0 0 auto;min-width:0;max-height:none;overflow-x:auto;overflow-y:visible;overscroll-behavior-x:contain}
+.truth-circuit .truth-table{width:100%}
+.toolbox,.bottom,.truth-wrap,.table-scroll,.details{touch-action:pan-x pan-y pinch-zoom}
+@media (min-width:761px){
+  .bottom{min-height:0}
+  .bottom-body{min-height:0}
+  .truth-wrap{overflow:hidden}
+  .truth-tables{max-height:100%}
+}
+@media (max-width:760px){
+  .truth-tables{flex:1 1 auto;max-height:100%;overflow:auto}
+  .truth-circuit-heading{gap:10px}
+  .truth-circuit-heading small{font-size:8px}
+  .truth-circuit .table-scroll{max-height:none;overflow-x:auto;overflow-y:visible}
+}
+

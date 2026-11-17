@@ -12,11 +12,12 @@ function zoomAt(next,cx=canvas.clientWidth/2,cy=canvas.clientHeight/2){const r=c
 $('fitBtn').onclick=()=>{if(!state.parts.length){scale=1;pan={x:0,y:0};applyView();return;}const minX=Math.min(...state.parts.map(p=>p.x)),minY=Math.min(...state.parts.map(p=>p.y)),maxX=Math.max(...state.parts.map(p=>p.x+PART_W)),maxY=Math.max(...state.parts.map(p=>p.y+90));scale=Math.max(.45,Math.min(1.25,(canvas.clientWidth-100)/(maxX-minX+100),(canvas.clientHeight-100)/(maxY-minY+100)));pan.x=(canvas.clientWidth-(maxX-minX)*scale)/2-minX*scale;pan.y=(canvas.clientHeight-(maxY-minY)*scale)/2-minY*scale;applyView();};
 canvas.addEventListener('wheel',e=>{e.preventDefault();zoomAt(scale+(e.deltaY<0?.08:-.08),e.clientX,e.clientY);},{passive:false});
 const activePointers=new Map();let gesture=null;
-// Prevent browser/page pinch zoom when a multi-touch gesture spans the canvas and surrounding UI.
-// Pinching with both fingers inside the canvas remains reserved for the circuit workspace.
-function touchesInsideCanvas(touches){const r=canvas.getBoundingClientRect();return Array.from(touches).every(t=>t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom);}
-document.addEventListener('touchstart',e=>{if(e.touches.length>1&&!touchesInsideCanvas(e.touches))e.preventDefault();},{passive:false,capture:true});
-document.addEventListener('touchmove',e=>{if(e.touches.length>1&&!touchesInsideCanvas(e.touches))e.preventDefault();},{passive:false,capture:true});
+// Keep pinch gestures scoped correctly: canvas-only pinches zoom the circuit;
+// gestures fully outside the canvas remain available for normal browser/page zoom.
+function canvasTouchCount(touches){const r=canvas.getBoundingClientRect();return Array.from(touches).filter(t=>t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom).length;}
+function preventMixedCanvasPinch(e){if(e.touches.length>1){const inside=canvasTouchCount(e.touches);if(inside>0&&inside<e.touches.length)e.preventDefault();}}
+document.addEventListener('touchstart',preventMixedCanvasPinch,{passive:false,capture:true});
+document.addEventListener('touchmove',preventMixedCanvasPinch,{passive:false,capture:true});
 
 canvas.addEventListener('pointerdown',e=>{
  if(e.target.closest('.box')||e.target.closest('svg path'))return;

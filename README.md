@@ -144,4 +144,4 @@ A 100-gate circuit was simulated 1,000 times using Node.js v22.16.0.
 ## Team
 
 - **Alfahad** (BTTC26O1011)
-- **Krishna** (BTTC2601073)
+- **Krishna** (BTTC26O1073)
